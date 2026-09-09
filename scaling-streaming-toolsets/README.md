@@ -3,8 +3,6 @@
 **Date:** 2026-05-11 · **Updated:** 2026-09-09
 **Author:** deutschmark
 
-> **2026-09 revision.** Re-audited against the deployed system after four months of growth. What changed: the worker count went from three to five (`quote`, `toolkit-redirect` joined); the public widget catalog grew from eight overlays to 78 listed widgets serving 29 active streamers; EventSub coverage went from three event types to eight; the now-playing poll became adaptive (3 s active / 12 s hidden-tab, visibility-gated); the signed-claim optimization proposed in §4 **shipped** (§4.1); and the resident chat bot moved LLM inference entirely off the platform (§1.5). The §2.2 measurements below are historical and unchanged — the architecture they measured is still the architecture, at 10× the surface.
-
 ---
 
 ## Abstract
