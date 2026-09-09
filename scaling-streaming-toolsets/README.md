@@ -148,8 +148,8 @@ The event-driven overlays exchanged their polling endpoints for WebSocket subscr
 
 - EventSub callback verifies a per-subscription secret: 1 KV read.
 - WebSocket connect/reconnect resolves `wid → twitchId`: **0 KV reads under a signed claim** (§4.1, deployed); 1 KV read only on the legacy fallback path.
-- `channel.update` fan-out across `M` death-counter widget tokens: 1 (index) + M (per-record) KV reads.
-- Each `config-changed` broadcast triggers an overlay refetch: 1 KV read per connected overlay.
+- `channel.update` fan-out across `M` death-counter widget tokens: 1 (index) + M (record) KV reads and M writes, at category-change frequency — maintenance-side cost of keeping the authoritative KV copy current; the client-visible refetch storm this used to cause is eliminated by inline-state dispatch (§4.3). Rides to zero with the §4.2 cutover.
+- `config-changed` broadcasts carry the new state inline (§4.3, deployed): **0 refetch reads**. Config GETs fire at page-load and fallback frequency only.
 
 So a single `!death`-style chat event costs `1 + M + K·M` KV reads where `M` is widget-token count and `K` is connected overlays per token — down from the original accounting's `1 + 1 + M + K·M`, because the connect path no longer contributes. This is non-zero but bounded by event frequency, not polling frequency. A 4-hour streaming session with 50 chat events and one overlay per token costs ~150 KV reads on the event-driven path — versus the naive-polling projection below.
 
@@ -201,7 +201,7 @@ The implication: a static-export Pages app has no live runtime feature flags. Ev
 
 ---
 
-## 4. Optimization paths — one shipped, two open
+## 4. Optimization paths — all shipped or gated
 
 ### 4.1 Signed `wid → twitchId` claim — SHIPPED (2026-09)
 
@@ -216,17 +216,22 @@ flowchart TD
   L --> WS
 ```
 
-### 4.2 DO SQLite for widget config — OPEN
+### 4.2 DO SQLite for widget config — SHIPPED staged, final cutover gated (2026-09)
 
-Widget configuration currently lives in KV under `widget_token:<wid>`; every `config-changed` broadcast triggers `K` overlays to refetch via KV. Moving config into the DO's SQLite storage and including the new state inside the broadcast payload eliminates the post-event refetch storm. The `K·M` factor in §2.3's accounting collapses to zero.
+Widget configuration now lives in the DO's SQLite storage, migrated in stages with KV remaining authoritative until the last step:
 
-### 4.3 Coalesced broadcast payload — OPEN
+- **Dual-write (deployed):** every save mirrors `wid:<wid>` configs and `settings:*` blobs into the user's DO storage, fire-and-forget. The wrangler config was already SQLite-backed (`new_sqlite_classes`) — the SQL surface was simply unused until now.
+- **DO-first reads (deployed):** the settings surfaces (BRB, VSO, clip-play, audio-norm) and timer state read from DO storage with KV fallback (`readMirroredFromDo`). The per-wid config GET endpoints still read KV — they fire at page-load and fallback frequency only, because coalesced broadcasts (§4.3) already removed the per-event refetch that made them hot.
+- **The gate (deployed 2026-09):** the 04:00 drift cron compares DO vs KV **by value** (stable-stringified, key-order-insensitive) across a sampled user set, reporting compared / drifted / missing-in-KV per key class, with key names only in logs. Zero drift over a soak window is the evidence bar for the final step.
+- **The cutover (flag exists, awaiting drift evidence):** `KV_WRITES_DISABLED=1` switches the settings surfaces to DO-only writes with cron writeback; per-wid surfaces flip last, after their GET endpoints move off KV. The channel.update fan-out's `1 + M` maintenance reads ride along with that flip — they exist to keep the KV authoritative copy current, so they can't be removed while the copy is still being written.
 
-The current `config-changed` event carries a `key` field; overlays then refetch. Embedding the full new state in the event removes the refetch round-trip entirely. Pairs naturally with the SQLite-storage change above.
+### 4.3 Coalesced broadcast payload — SHIPPED (2026-09)
 
-### Surviving polling
+Every `config-changed` dispatch now carries the full new state inline, wid-filtered; all nine overlay clients apply the inline state directly and refetch only as a fallback for events without it. The `channel.update` fan-out likewise dispatches per-wid inline state. The post-event `K·M` refetch storm — the cost §4.2/4.3 were named for — is eliminated.
 
-Two dashboard-side polls remain: `useSupportPool` (60 s while visible; fully paused while the tab is hidden) and the chat-bot health check (10 s against `localhost`). The first is still a candidate-for-SSE; the second is local-loopback only and does not consume Cloudflare quota.
+### Surviving polling — resolved
+
+Two dashboard-side polls remained after the overlay migration: `useSupportPool` (community-fund total) and the chat-bot health check (10 s against `localhost`). The SSE idea for the first is closed, not pending: the pool changes roughly daily, and a held-open SSE connection costs more (always-on connection, duration billing) than a visibility-gated 60 s poll that sleeps entirely while the tab is hidden. Gated interval polling is the right shape for slowly-changing data; push earns its keep only when events are frequent. The second is local-loopback only and does not consume Cloudflare quota.
 
 ---
 
@@ -234,7 +239,7 @@ Two dashboard-side polls remain: `useSupportPool` (60 s while visible; fully pau
 
 Assumptions: 4-hour streaming session per user per day, all overlays connected, 50 chat events per session.
 
-| Users | Naive polling (worker req/day) | Architecture-as-deployed | With §4.2/4.3 applied |
+| Users | Naive polling (worker req/day) | Architecture-as-deployed | With the §4.2 cutover complete |
 |---|---|---|---|
 | 1 | 138,240 | ~200 | ~50 |
 | 10 | 1.38M | ~2,000 | ~500 |
@@ -242,7 +247,7 @@ Assumptions: 4-hour streaming session per user per day, all overlays connected, 
 | 1,000 | 138M | ~200,000 | ~50,000 |
 | 10,000 | 1.38B | ~2M | ~500k |
 
-Naive crosses the free-tier daily ceiling at one user, the paid-tier daily-equivalent at ten. Architecture-as-deployed stays in free-tier headroom through 1,000 active streamers; with §4.2/4.3 applied, through 10,000. (§4.1, now shipped, removed the reconnect-path KV component entirely — the projections above already assume well-behaved clients; flapping clients no longer add to them.)
+Naive crosses the free-tier daily ceiling at one user, the paid-tier daily-equivalent at ten. Architecture-as-deployed stays in free-tier headroom through 1,000 active streamers; with the §4.2 cutover complete (KV writes dropped, all reads from DO storage), through 10,000. §4.1 and §4.3 are already reflected in the deployed column — the reconnect-path KV component and the post-event refetch storm are gone; the cutover column removes the remaining maintenance-side fan-out reads and the page-load config GET reads.
 
 The two curves, against the tier ceilings that actually bill:
 
@@ -275,4 +280,4 @@ The flat lower line in each chart is the free-tier daily ceiling (~100k worker r
 
 The system is push, not pull. Polling on the hot path is replaced with a worker-minted Spotify token (the browser polls the upstream directly) and a per-user Durable Object holding hibernatable WebSockets (event sources dispatch through service bindings; the DO broadcasts to subscribed overlays). KV is cold persistence — read on session start, written on user-driven save events, and no longer touched even on WebSocket reconnects under signed claims.
 
-The now-playing path is measured; the event-driven path is projected at the call-site level, with two named architectural changes (§4.2/4.3) that would tighten those projections further. Four months of production growth — 10× the widget surface, 8 EventSub types, a whole local-first chat bot added and then moved off-platform — has not changed the shape. For per-user real-time tools on Cloudflare's edge, the patterns documented here — cache-layer composition, visibility gating on poll loops, push for event-shaped data, signed claims over KV lookups on the connect path, and refusing to host per-user workloads that can't be amortized — compose to a system that scales with user count, not with overlay count × polling frequency.
+The now-playing path is measured; the event-driven path is projected at the call-site level. Of the optimizations this paper proposed, the signed connect claim, the coalesced broadcast, and the staged DO-SQLite config migration are deployed — with one deliberate remainder: the final KV-write drop, held behind a value-level drift gate rather than shipped on faith. Four months of production growth — 10× the widget surface, 8 EventSub types, a whole local-first chat bot added and then moved off-platform — has not changed the shape. For per-user real-time tools on Cloudflare's edge, the patterns documented here — cache-layer composition, visibility gating on poll loops, push for event-shaped data, signed claims over KV lookups on the connect path, and refusing to host per-user workloads that can't be amortized — compose to a system that scales with user count, not with overlay count × polling frequency.
