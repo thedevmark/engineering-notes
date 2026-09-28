@@ -40,9 +40,9 @@ This is the result of my internal testing, not a claim that every iPhone upload 
 
 ```mermaid
 flowchart LR
-    A[Genuine 4K/60 file] --> B[iPhone]
-    B --> C[Native app and possible<br/>local video processing]
-    C --> D[Platform processing]
+    A[Finished video] --> B[4K60 Native Ingest<br/>file and account checks]
+    B --> C[iPhone native app<br/>local preparation]
+    C --> D[Platform playback versions]
     D --> E[Published video]
 ```
 
@@ -57,6 +57,10 @@ Meta also says [Reels receives multiple encodes](https://engineering.fb.com/2023
 - [Qi et al. (2023)](https://arxiv.org/abs/2312.12317) studied quality loss when user-generated video is compressed again for delivery.
 
 These papers support the processing problem. They do not test the same iPhone-versus-desktop paths I used.
+
+## Why I built the tool
+
+Meta's documented pipeline shows why export settings alone could not settle this: Instagram prepares an upload file on the phone, then the platform makes the versions people watch. My 40+ tests showed that the native iPhone route worked best for me. I built 4K60 Native Ingest to repeat that route with the right file, account, and text instead of doing every phone step by hand. Its first implementation is Windows + iPhone + YouTube Shorts; the other platforms remain future work.
 
 ## Recommendation
 
