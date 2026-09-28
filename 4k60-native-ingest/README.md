@@ -48,6 +48,8 @@ flowchart LR
 
 My working explanation is that the native app prepares the video on the phone before upload. [Meta describes Instagram's client processing](https://engineering.fb.com/2025/11/17/ios/enhancing-hdr-on-instagram-for-ios-with-dolby-vision/): the creator's device makes an upload file, then Meta's servers produce playback versions. That confirms local processing in at least one of these apps. I have not measured which stage caused the difference in my own uploads.
 
+Meta also says [Reels receives multiple encodes](https://engineering.fb.com/2023/02/21/video-engineering/av1-codec-facebook-instagram-reels/) and that advanced versions depend partly on expected watch time. The viewer's connection affects which version plays. This means the upload file alone cannot establish what people see; a browser extension cannot control those server and playback decisions.
+
 ## Related research
 
 - [Učakar, Selič, and Urbas (2020)](https://www.grid.uns.ac.rs/symposium/download/2020/73.pdf) varied codec and bitrate, then compared video before and after Instagram and YouTube uploads. They measured changes in size, resolution, and visible quality.
