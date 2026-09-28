@@ -6,7 +6,7 @@
 
 ## Abstract
 
-Mark's repeated experience with vertical short-form video was that genuine 4K/60 fps exports uploaded through an iPhone produced more consistently good-looking posts across YouTube, TikTok, Instagram, Threads, Facebook, and X than his other upload paths. A narrower TikTok desktop investigation supplied a measurable failure: two downloaded test streams were 576 × 1024 at 30 fps, despite a 60 fps source and an active browser upload hook. The observations justify testing and preserving the native phone path. They do not establish that iPhone uploads always deliver 4K/60, that every desktop upload loses frames, or which stage caused the difference.
+Mark reports testing about 40 vertical short-form videos. Across that work, genuine 4K/60 fps exports uploaded through an iPhone produced more consistently good-looking posts on YouTube, TikTok, Instagram, Threads, Facebook, and X than his other upload paths. A narrower TikTok desktop investigation supplied a measurable failure: two downloaded test streams were 576 × 1024 at 30 fps, despite a 60 fps source and an active browser upload hook. The roughly 40-video experience is substantial field testing, while the two streams are the retained frame-rate measurements. Together they justify testing and preserving the native phone path. They do not establish that iPhone uploads always deliver 4K/60, that every desktop upload loses frames, or which stage caused the difference.
 
 This paper separates the source file, phone or browser preparation, server processing, and viewer playback. It explains why local iPhone processing is a plausible mechanism, what the public documentation actually supports, and the experiment needed to locate the quality loss.
 
@@ -30,12 +30,12 @@ The word *throttling* describes the experience of lower quality, but the evidenc
 
 | Observation | Strength | Limit |
 | --- | --- | --- |
-| Mark found iPhone uploads of genuine 4K/60 vertical exports to be the most consistently high-quality path in his own use of YouTube, TikTok, Instagram, Threads, Facebook, and X. | Repeated first-person operational observation. | No controlled same-file, same-account, same-age playback matrix is archived for all six services. |
+| Mark reports testing about 40 videos and found iPhone uploads of genuine 4K/60 vertical exports to be the most consistently high-quality path in his own use of YouTube, TikTok, Instagram, Threads, Facebook, and X. | Roughly 40 videos of first-person field testing. | The per-platform counts, matched upload pairs, and a same-file, same-account, same-age playback matrix are not archived here. |
 | Two TikTok streams downloaded during the desktop investigation measured 576 × 1024 at 30 fps. | Measured properties recorded in the local `60fps-upload-helper` README. | Two streams are a small sample; the fetched rendition can depend on device, network, account, and processing state. |
 | The TikTok browser hook was active but did not demonstrate a delivered 60 fps post. | Local hook tests and the two stream measurements. | No verified live 60 fps result from that hook. |
 | The separate Video Drop project has a documented OneDrive → iOS share sheet → native app path, with a YouTube composer preparation runner. | Repository source and runbook. | An end-to-end published post and playback-quality receipt are not established by those source checks. |
 
-The TikTok measurement is evidence about the particular streams fetched, not every rendition TikTok might have stored. The other five platforms have no comparable measured output retained in this report. It would be inaccurate to turn Mark's broader visual observation into six measured 4K/60 delivery claims.
+The two-stream TikTok measurement is evidence about those particular streams, not the size of the overall video testing or every rendition TikTok might have stored. The other five platforms have no comparable measured output retained in this report. It would be inaccurate to turn Mark's roughly 40-video visual finding into six measured 4K/60 delivery claims.
 
 ## 3. What the platform documentation says
 
@@ -69,4 +69,4 @@ A reproducible difference in served renditions would establish a path-dependent 
 
 ## 7. Evidence boundary
 
-This report draws on Mark's recorded cross-platform experience, the September 2026 TikTok desktop investigation, Video Drop's phone runbook, and the primary documentation linked above. The local helper README recorded the two TikTok stream properties, but its raw test media and network captures are not included here. Platform behavior may change. The conclusion supported today is narrower than a universal platform rule: **the iPhone path has worked better for this operator, and the measured desktop TikTok samples were 30 fps.**
+This report draws on Mark's reported testing of about 40 videos, the September 2026 TikTok desktop investigation, Video Drop's phone runbook, and the primary documentation linked above. The per-video test log and platform breakdown are not included here. The local helper README recorded the two TikTok stream properties, but its raw test media and network captures are not included here. Platform behavior may change. The conclusion supported today is narrower than a universal platform rule: **across about 40 videos, the iPhone path worked better for this operator; two measured desktop TikTok streams were 30 fps.**
