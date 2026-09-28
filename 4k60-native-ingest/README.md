@@ -46,9 +46,11 @@ flowchart LR
     D --> E[Published video]
 ```
 
-My working explanation is that the native app prepares the video on the phone before upload. [Meta describes Instagram's client processing](https://engineering.fb.com/2025/11/17/ios/enhancing-hdr-on-instagram-for-ios-with-dolby-vision/): the creator's device makes an upload file, then Meta's servers produce playback versions. That confirms local processing in at least one of these apps. I have not measured which stage caused the difference in my own uploads.
+The iPhone can do substantial video work locally. [Apple's AVFoundation documentation](https://developer.apple.com/videos/play/wwdc2020/10010/) describes on-device export that can change codec, size, color space, and frame rate; it also documents hardware HEVC encoding on iOS. Apple says the [system share sheet can convert video for its destination](https://developer.apple.com/documentation/avfoundation/recording-movies-in-alternative-formats). These are capabilities, not proof of what the YouTube app did to my files.
 
-Meta also says [Reels receives multiple encodes](https://engineering.fb.com/2023/02/21/video-engineering/av1-codec-facebook-instagram-reels/) and that advanced versions depend partly on expected watch time. The viewer's connection affects which version plays. This means the upload file alone cannot establish what people see; a browser extension cannot control those server and playback decisions.
+[Meta describes the actual Instagram app pipeline](https://engineering.fb.com/2025/11/17/ios/enhancing-hdr-on-instagram-for-ios-with-dolby-vision/): the creator's device makes an upload file, Meta's servers transcode it, and the viewer's device selects a playback version. For iPhone HDR video, that first stage encodes HEVC on the device. This confirms that a native app can process the source before the platform receives it. I did not measure which stage caused the differences in my tests.
+
+Meta says [Instagram produces basic and advanced encodes](https://engineering.fb.com/2022/11/04/video-engineering/instagram-video-processing-encoding-reduction/) and uses adaptive bitrate playback. Its server change increased watch time covered by advanced encodes by 33%. [Reels' advanced versions](https://engineering.fb.com/2023/02/21/video-engineering/av1-codec-facebook-instagram-reels/) also depend partly on expected watch time. The upload file alone cannot establish what each viewer sees, and a browser extension cannot control those server and playback decisions.
 
 ## Related research
 
@@ -60,7 +62,7 @@ These papers support the processing problem. They do not test the same iPhone-ve
 
 ## Why I built the tool
 
-Meta's documented pipeline shows why export settings alone could not settle this: Instagram prepares an upload file on the phone, then the platform makes the versions people watch. My 40+ tests showed that the native iPhone route worked best for me. I built 4K60 Native Ingest to repeat that route with the right file, account, and text instead of doing every phone step by hand. Its first implementation is Windows + iPhone + YouTube Shorts; the other platforms remain future work.
+My 40+ tests showed that the native iPhone route worked best for me. The published pipeline explains why export settings alone could not settle it: the phone may prepare the upload, and the platform still decides which versions people watch. [YouTube recommends uploading at the recorded frame rate](https://support.google.com/youtube/answer/1722171?hl=en) and gives 2160p/60 a higher source bitrate range than 2160p/30. That supports keeping genuine 4K/60 footage intact through the handoff, without promising 4K/60 playback. I built 4K60 Native Ingest to repeat the route with the right file, account, and text. Its first implementation is Windows + iPhone + YouTube Shorts; the other platforms remain future work.
 
 ## Recommendation
 
