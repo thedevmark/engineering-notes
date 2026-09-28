@@ -46,7 +46,15 @@ flowchart LR
     D --> E[Published video]
 ```
 
-My working explanation is that the iPhone's native media path prepares 4K/60 footage efficiently before upload. Apple provides [on-device media export](https://developer.apple.com/documentation/avfoundation/avassetexportsession?language=objc) and [hardware-assisted video encoding](https://developer.apple.com/documentation/videotoolbox?language=objc). I have not measured what each social app sends to its server, so the exact cause remains open. The practical difference in my tests was the upload route.
+My working explanation is that the native app prepares the video on the phone before upload. [Meta describes Instagram's client processing](https://engineering.fb.com/2025/11/17/ios/enhancing-hdr-on-instagram-for-ios-with-dolby-vision/): the creator's device makes an upload file, then Meta's servers produce playback versions. That confirms local processing in at least one of these apps. I have not measured which stage caused the difference in my own uploads.
+
+## Related research
+
+- [Učakar, Selič, and Urbas (2020)](https://www.grid.uns.ac.rs/symposium/download/2020/73.pdf) varied codec and bitrate, then compared video before and after Instagram and YouTube uploads. They measured changes in size, resolution, and visible quality.
+- [Lu et al. (CVPR 2024)](https://openaccess.thecvf.com/content/CVPR2024/papers/Lu_KVQ_Kwai_Video_Quality_Assessment_for_Short-form_Videos_CVPR_2024_paper.pdf) studied short-form video quality using 600 uploads and 3,600 processed versions, including transcoding.
+- [Qi et al. (2023)](https://arxiv.org/abs/2312.12317) studied quality loss when user-generated video is compressed again for delivery.
+
+These papers support the processing problem. They do not test the same iPhone-versus-desktop paths I used.
 
 ## Recommendation
 
