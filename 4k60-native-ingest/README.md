@@ -10,41 +10,21 @@ The desktop and browser paths I tried more often produced visible compression or
 
 ## What I tested
 
-```mermaid
-flowchart LR
-    A[40+ short-form videos] --> B[Codec]
-    A --> C[Bitrate]
-    A --> D[Resolution and frame rate]
-    A --> E[Desktop, browser, extension, iPhone]
-    B --> F[Inspect posted video]
-    C --> F
-    D --> F
-    E --> F
-```
+![Diagram of the test variables, upload routes, and observed results](figures/test-routes.svg)
+
+*Figure 1. Structure and qualitative result of my 40+ video tests. No per-route counts or quality scores are inferred.*
 
 I judged the posted video, not just the export file or the upload preview. A source marked 60 fps does not prove that the platform serves 60 fps. [YouTube also processes higher-quality versions after the initial upload](https://support.google.com/youtube/answer/71674?hl=en-GB), so I checked after processing.
 
 ## Result
 
-```mermaid
-flowchart LR
-    A[Upload routes I tested] --> B[Desktop and browser]
-    A --> C[Native iPhone apps]
-    B --> D[More visible compression<br/>or lower frame rate]
-    C --> E[Most consistent<br/>high-quality result]
-```
-
 The Chrome extension did not close the gap in my tests. That result drove the tool's upload path.
 
 ## Why the upload path matters
 
-```mermaid
-flowchart LR
-    A[Finished video] --> B[4K60 Native Ingest<br/>file and account checks]
-    B --> C[iPhone native app<br/>local preparation]
-    C --> D[Platform playback versions]
-    D --> E[Published video]
-```
+![Diagram of source, iPhone, platform, and viewer processing stages](figures/processing-path.svg)
+
+*Figure 2. The tool checks the handoff to the native app. [Meta documents](https://engineering.fb.com/2025/11/17/ios/enhancing-hdr-on-instagram-for-ios-with-dolby-vision/) the client, server, and viewer stages for Instagram.*
 
 The iPhone has a local video pipeline. [Apple's AVFoundation documentation](https://developer.apple.com/videos/play/wwdc2020/10010/) describes on-device export that changes codec, size, color space, and frame rate, with hardware HEVC encoding on iOS. Apple also documents [format conversion when an app shares captured video through the system share sheet](https://developer.apple.com/documentation/avfoundation/recording-movies-in-alternative-formats). The source file alone does not describe every transformation in an app upload.
 
@@ -65,6 +45,10 @@ These studies establish the processing and measurement problem. My 40+ tests ans
 The research explains why export settings alone did not solve this: the phone prepares an upload, the server makes new encodes, and the viewer receives one of them. My tests selected the route that worked: a genuine 4K/60 file uploaded in the native iPhone app. The Chrome extension did not deliver the same consistency, so I built 4K60 Native Ingest around the winning route. It checks the intended file, account, and text before the phone upload instead of making me repeat those steps by hand. The first implementation is Windows + iPhone + YouTube Shorts; the other platforms remain future work.
 
 ## Recommended workflow
+
+![Chart of YouTube recommended SDR upload bitrates for 1080p and 2160p at standard and high frame rates](figures/youtube-upload-bitrate.svg)
+
+*Figure 3. [YouTube's published SDR upload ranges](https://support.google.com/youtube/answer/1722171?hl=en). These are source-file recommendations, not measured outcomes from my tests or playback bitrates.*
 
 1. **Start with real 4K/60 footage.** Keep the source's actual detail and motion. Upscaling or labeling a 30 fps clip as 60 fps does not create either one.
 2. **Export a clean vertical master.** Use **2160 × 3840, 59.94/60 fps progressive** when the source supports it. [YouTube recommends the recorded frame rate](https://support.google.com/youtube/answer/1722171?hl=en) and lists 53–68 Mbps as its 2160p high-frame-rate SDR upload range. That is a source-file starting point, not a playback bitrate.

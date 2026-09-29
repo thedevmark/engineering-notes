@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
+  <title id="title">YouTube recommended SDR upload bitrates by resolution and frame rate</title>
+  <desc id="desc">At 1080p YouTube recommends 8 megabits per second for 24 to 30 fps and 12 for 48 to 60 fps. At 2160p it recommends 35 to 45 megabits per second for 24 to 30 fps and 53 to 68 for 48 to 60 fps. These are upload source recommendations, not delivered playback bitrates.</desc>
+  <defs>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #405360; }
+      .title { font-size: 25px; font-weight: 600; }
+      .subtitle { font-size: 15px; fill: #687d8a; }
+      .row { font-size: 17px; font-weight: 600; }
+      .value { font-size: 17px; font-weight: 700; }
+      .tick { font-size: 13px; fill: #778a96; }
+      .note { font-size: 13px; fill: #687d8a; }
+      .grid { stroke: #e3e9ed; stroke-width: 1; }
+      .rule { stroke: #e9eef1; stroke-width: 1; }
+    </style>
+  </defs>
+  <rect width="1180" height="520" fill="#fff"/>
+  <text x="48" y="49" class="title">YouTube recommends higher source bitrate for 4K/60</text>
+  <text x="48" y="78" class="subtitle">YouTube recommended SDR upload bitrate by resolution and frame rate</text>
+
+  <rect x="48" y="358" width="1084" height="65" rx="10" fill="#effaf8"/>
+  <path d="M275 124 V426 M380 124 V426 M485 124 V426 M590 124 V426 M695 124 V426 M800 124 V426 M905 124 V426 M1010 124 V426" class="grid"/>
+  <path d="M48 208 H1132 M48 281 H1132 M48 354 H1132" class="rule"/>
+
+  <text x="48" y="177" class="row">1080p · 24–30 fps</text>
+  <text x="48" y="250" class="row">1080p · 48–60 fps</text>
+  <text x="48" y="323" class="row">2160p · 24–30 fps</text>
+  <text x="48" y="396" class="row" fill="#237b79">2160p · 48–60 fps</text>
+
+  <circle cx="359" cy="171" r="8" fill="#788cba"/>
+  <text x="379" y="177" class="value" fill="#566da2">8 Mbps</text>
+  <circle cx="401" cy="244" r="8" fill="#788cba"/>
+  <text x="421" y="250" class="value" fill="#566da2">12 Mbps</text>
+
+  <path d="M643 317 H748" stroke="#a39bdd" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="643" cy="317" r="8" fill="#8f88cf"/>
+  <circle cx="748" cy="317" r="8" fill="#8f88cf"/>
+  <text x="770" y="323" class="value" fill="#736cba">35–45 Mbps</text>
+
+  <path d="M832 390 H989" stroke="#49bdb7" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="832" cy="390" r="9" fill="#249d99"/>
+  <circle cx="989" cy="390" r="9" fill="#249d99"/>
+  <text x="1009" y="396" class="value" fill="#237b79">53–68 Mbps</text>
+
+  <text x="275" y="453" text-anchor="middle" class="tick">0</text>
+  <text x="380" y="453" text-anchor="middle" class="tick">10</text>
+  <text x="485" y="453" text-anchor="middle" class="tick">20</text>
+  <text x="590" y="453" text-anchor="middle" class="tick">30</text>
+  <text x="695" y="453" text-anchor="middle" class="tick">40</text>
+  <text x="800" y="453" text-anchor="middle" class="tick">50</text>
+  <text x="905" y="453" text-anchor="middle" class="tick">60</text>
+  <text x="1010" y="453" text-anchor="middle" class="tick">70</text>
+  <text x="643" y="483" text-anchor="middle" class="tick" style="font-size:14px">Recommended source bitrate (Mbps)</text>
+  <text x="48" y="505" class="note">Published upload guidance, not measurements from the 40+ tests or a promise of viewer playback quality.</text>
+</svg>

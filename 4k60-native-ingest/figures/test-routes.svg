@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="470" viewBox="0 0 1180 470" role="img" aria-labelledby="title desc">
+  <title id="title">Test variables, upload routes, and observed results</title>
+  <desc id="desc">More than 40 short-form videos varied codec, bitrate, resolution, and frame rate. Desktop and browser uploads more often showed compression or lower frame rate. A Chrome extension did not close the gap. Native iPhone app uploads produced the most consistent high-quality result.</desc>
+  <defs>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #405360; }
+      .title { font-size: 25px; font-weight: 600; }
+      .subtitle { font-size: 15px; fill: #687d8a; }
+      .group { font-size: 12px; font-weight: 700; letter-spacing: 1.7px; fill: #637987; }
+      .body { font-size: 16px; font-weight: 600; }
+      .small { font-size: 13px; fill: #657987; }
+      .white { fill: #fff; }
+      .frame { fill: #fff; stroke: #bccbd3; stroke-width: 1.5; stroke-dasharray: 4 4; }
+      .soft { fill: #eef3f5; stroke: #d5e0e5; stroke-width: 1; }
+      .slate { fill: #657b89; }
+      .lavender { fill: #e4e2fa; }
+      .mint { fill: #a9eae4; }
+      .arrow { fill: none; stroke: #7a8d98; stroke-width: 1.8; marker-end: url(#arrowhead); }
+      .branch { fill: none; stroke: #7a8d98; stroke-width: 1.8; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#7a8d98"/>
+    </marker>
+  </defs>
+  <rect width="1180" height="470" fill="#fff"/>
+  <text x="48" y="49" class="title">Upload route separated the results</text>
+  <text x="48" y="78" class="subtitle">Internal comparison across 40+ short-form videos and six platforms</text>
+
+  <rect x="47" y="194" width="176" height="68" rx="10" class="slate"/>
+  <text x="135" y="222" text-anchor="middle" class="white" style="font-size:23px;font-weight:700">40+ VIDEOS</text>
+  <text x="135" y="246" text-anchor="middle" class="white" style="font-size:13px">published, then inspected</text>
+  <path d="M223 228 H266" class="arrow"/>
+
+  <rect x="270" y="108" width="234" height="285" rx="14" class="frame"/>
+  <text x="288" y="137" class="group">EXPORT VARIABLES</text>
+  <rect x="288" y="158" width="198" height="43" rx="8" class="soft"/>
+  <text x="387" y="185" text-anchor="middle" class="body">Codec</text>
+  <rect x="288" y="215" width="198" height="43" rx="8" class="soft"/>
+  <text x="387" y="242" text-anchor="middle" class="body">Bitrate</text>
+  <rect x="288" y="272" width="198" height="43" rx="8" class="soft"/>
+  <text x="387" y="299" text-anchor="middle" class="body">Resolution</text>
+  <rect x="288" y="329" width="198" height="43" rx="8" class="soft"/>
+  <text x="387" y="356" text-anchor="middle" class="body">Frame rate</text>
+
+  <path d="M504 228 H523 M523 185 V341" class="branch"/>
+  <path d="M523 185 H540" class="arrow"/>
+  <path d="M523 263 H540" class="arrow"/>
+  <path d="M523 341 H540" class="arrow"/>
+  <rect x="544" y="108" width="280" height="285" rx="14" class="frame"/>
+  <text x="562" y="137" class="group">UPLOAD ROUTES</text>
+  <rect x="562" y="159" width="244" height="53" rx="9" class="slate"/>
+  <text x="684" y="191" text-anchor="middle" class="white" style="font-size:16px;font-weight:600">Desktop / browser</text>
+  <rect x="562" y="237" width="244" height="53" rx="9" class="slate"/>
+  <text x="684" y="260" text-anchor="middle" class="white" style="font-size:15px;font-weight:600">60 fps Chrome</text>
+  <text x="684" y="278" text-anchor="middle" class="white" style="font-size:15px;font-weight:600">extension</text>
+  <rect x="562" y="315" width="244" height="53" rx="9" class="slate"/>
+  <text x="684" y="347" text-anchor="middle" class="white" style="font-size:16px;font-weight:600">Native iPhone app</text>
+
+  <path d="M824 185 H856" class="arrow"/>
+  <path d="M824 263 H856" class="arrow"/>
+  <path d="M824 341 H856" class="arrow"/>
+  <rect x="860" y="108" width="272" height="285" rx="14" class="frame"/>
+  <text x="878" y="137" class="group">POSTED RESULT</text>
+  <rect x="878" y="159" width="236" height="53" rx="9" class="lavender"/>
+  <text x="996" y="181" text-anchor="middle" class="body" style="font-size:14px">More compression or</text>
+  <text x="996" y="199" text-anchor="middle" class="body" style="font-size:14px">lower frame rate</text>
+  <rect x="878" y="237" width="236" height="53" rx="9" class="lavender"/>
+  <text x="996" y="269" text-anchor="middle" class="body" style="font-size:15px">Gap remained</text>
+  <rect x="878" y="315" width="236" height="53" rx="9" class="mint"/>
+  <text x="996" y="337" text-anchor="middle" class="body" style="font-size:14px">Most consistent</text>
+  <text x="996" y="355" text-anchor="middle" class="body" style="font-size:14px">high-quality result</text>
+
+  <text x="48" y="437" class="small">Observed direction of the internal tests; no per-route counts or quality scores are asserted.</text>
+</svg>
