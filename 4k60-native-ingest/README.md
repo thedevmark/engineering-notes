@@ -16,19 +16,15 @@ The desktop and browser paths I tried more often produced visible compression or
 
 I judged the posted video, not just the export file or the upload preview. A source marked 60 fps does not prove that the platform serves 60 fps. [YouTube also processes higher-quality versions after the initial upload](https://support.google.com/youtube/answer/71674?hl=en-GB), so I checked after processing.
 
-## Result
+## What I tried with a Chrome extension
 
-The Chrome extension did not close the gap in my tests. That result drove the tool's upload path.
+I wanted TikTok's website on Windows to publish 60 fps video the way its iPhone app did in my tests. If that worked, I could skip moving each video to the phone.
 
-## The Chrome extension experiment
+First, I built an extension that checked the source video's frame rate and opened the upload pages for Instagram, YouTube, and TikTok. That checked the input file only.
 
-I wanted a no-login way to upload from Windows and get the 60 fps, high-quality result I had seen from iPhone apps. The first helper checked the source file's frame rate locally and opened the upload pages for Instagram, YouTube, and TikTok. It confirmed the input file, but it could not control the versions those platforms served.
+Next, I made a TikTok-specific version. It changed some values the browser sent during TikTok's normal upload. It did not re-encode the file or control TikTok's published version.
 
-I narrowed the experiment to TikTok and built a page hook based on the basic mode of a supplied third-party extension. The goal was to stop the 30 fps result I was seeing from TikTok's web uploader while keeping its normal upload UI. The reference also offered cloud modes tied to a third-party login; I kept only its local mode.
-
-My hook replaced temporary video object URLs and changed selected fields in TikTok's upload request, including its video-canvas flag. I still selected and submitted the file through TikTok's own uploader. The hook did not re-encode the video or set a 60 fps output value. Its green check showed that the hook was active on the page, not that the posted video was 60 fps.
-
-The TikTok web uploads I checked were served at 30 fps, including a test from a 1080p/60 fps source. A separate iPhone upload had a 1080p rendition at about 60 fps. The extension did not reproduce that result, so I built 4K60 Native Ingest around the phone upload route.
+I then checked the published videos. The TikTok web uploads I inspected were served at 30 fps, including one from a 1080p/60 fps source. A separate iPhone upload had a 1080p version near 60 fps. The browser changes ran, but the web result still did not match the iPhone result. I built 4K60 Native Ingest around the phone upload route.
 
 ## Why the upload path matters
 
