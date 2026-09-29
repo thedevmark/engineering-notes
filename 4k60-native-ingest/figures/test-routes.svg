@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1180" height="470" viewBox="0 0 1180 470" role="img" aria-labelledby="title desc">
   <title id="title">Test variables, upload routes, and observed results</title>
-  <desc id="desc">More than 40 short-form videos varied codec, bitrate, resolution, and frame rate. Desktop and browser uploads more often showed compression or lower frame rate. A Chrome extension did not close the gap. Native iPhone app uploads produced the most consistent high-quality result.</desc>
+  <desc id="desc">More than 40 short-form videos varied codec, bitrate, resolution, and frame rate. Desktop and browser uploads more often showed compression or lower frame rate. A TikTok browser hook did not close the gap. Native iPhone app uploads produced the most consistent high-quality result.</desc>
   <defs>
     <style>
       text { font-family: "Segoe UI", Arial, sans-serif; fill: #405360; }
@@ -24,7 +24,7 @@
   </defs>
   <rect width="1180" height="470" fill="#fff"/>
   <text x="48" y="49" class="title">Upload route separated the results</text>
-  <text x="48" y="78" class="subtitle">Internal comparison across 40+ short-form videos and six platforms</text>
+  <text x="48" y="78" class="subtitle">40+ short-form videos across six platforms; the browser hook was tested on TikTok</text>
 
   <rect x="47" y="194" width="176" height="68" rx="10" class="slate"/>
   <text x="135" y="222" text-anchor="middle" class="white" style="font-size:23px;font-weight:700">40+ VIDEOS</text>
@@ -51,8 +51,8 @@
   <rect x="562" y="159" width="244" height="53" rx="9" class="slate"/>
   <text x="684" y="191" text-anchor="middle" class="white" style="font-size:16px;font-weight:600">Desktop / browser</text>
   <rect x="562" y="237" width="244" height="53" rx="9" class="slate"/>
-  <text x="684" y="260" text-anchor="middle" class="white" style="font-size:15px;font-weight:600">60 fps Chrome</text>
-  <text x="684" y="278" text-anchor="middle" class="white" style="font-size:15px;font-weight:600">extension</text>
+  <text x="684" y="260" text-anchor="middle" class="white" style="font-size:15px;font-weight:600">TikTok browser</text>
+  <text x="684" y="278" text-anchor="middle" class="white" style="font-size:15px;font-weight:600">upload hook</text>
   <rect x="562" y="315" width="244" height="53" rx="9" class="slate"/>
   <text x="684" y="347" text-anchor="middle" class="white" style="font-size:16px;font-weight:600">Native iPhone app</text>
 
