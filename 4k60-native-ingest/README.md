@@ -18,13 +18,16 @@ I judged the posted video, not just the export file or the upload preview. A sou
 
 ## What I tried with a Chrome extension
 
-I wanted TikTok's website on Windows to publish 60 fps video the way its iPhone app did in my tests. If that worked, I could skip moving each video to the phone.
+I wanted TikTok's website on Windows to publish 60 fps video the way its iPhone app did in my tests. If that worked, I could skip moving each video to the phone. I inspected a supplied Chrome extension called **60FPS Upload Manager v5.5.2** to see how it tried to change TikTok uploads.
 
-First, I built an extension that checked the source video's frame rate and opened the upload pages for Instagram, YouTube, and TikTok. That checked the input file only.
+The supplied extension had two approaches:
 
-Next, I made a TikTok-specific version. It changed some values the browser sent during TikTok's normal upload. It did not re-encode the file or control TikTok's published version.
+- **Basic mode** ran inside TikTok's upload page. It swapped a temporary URL the page used for the selected video and removed draft and canvas-editing settings from the upload request. The aim was to make TikTok handle the browser upload differently. It did not make a new 60 fps file or force TikTok to publish at 60 fps.
+- **Cloud and enhanced modes** sent the file to a third-party service and used Telegram-linked login. I wanted a local path without sending my video to that service, so I did not build those modes.
 
-I then checked the published videos. The TikTok web uploads I inspected were served at 30 fps, including one from a 1080p/60 fps source. A separate iPhone upload had a 1080p version near 60 fps. The browser changes ran, but the web result still did not match the iPhone result. I built 4K60 Native Ingest around the phone upload route.
+My first helper only checked the source video's frame rate and opened upload pages for Instagram, YouTube, and TikTok. I then built a TikTok-only version of the reference extension's basic mode. I still selected and posted the file through TikTok's normal uploader. Its green check meant the page changes were active, not that the published video was 60 fps.
+
+The TikTok web uploads I inspected were served at 30 fps, including one from a 1080p/60 fps source. A separate iPhone upload had a 1080p version near 60 fps. Rebuilding the local mode did not reproduce the iPhone result. I built 4K60 Native Ingest around the phone upload route.
 
 ## Why the upload path matters
 
