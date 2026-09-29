@@ -34,9 +34,9 @@ flowchart LR
     C --> E[Most consistent<br/>high-quality result]
 ```
 
-This is the result of my internal testing, not a claim that every iPhone upload is delivered in 4K/60 or that every desktop upload fails. The Chrome extension could change the browser upload flow, but it did not change my overall result.
+The Chrome extension did not close the gap in my tests. That result drove the tool's upload path.
 
-## Why the phone may perform better
+## Why the upload path matters
 
 ```mermaid
 flowchart LR
@@ -46,24 +46,28 @@ flowchart LR
     D --> E[Published video]
 ```
 
-The iPhone can do substantial video work locally. [Apple's AVFoundation documentation](https://developer.apple.com/videos/play/wwdc2020/10010/) describes on-device export that can change codec, size, color space, and frame rate; it also documents hardware HEVC encoding on iOS. Apple says the [system share sheet can convert video for its destination](https://developer.apple.com/documentation/avfoundation/recording-movies-in-alternative-formats). These are capabilities, not proof of what the YouTube app did to my files.
+The iPhone has a local video pipeline. [Apple's AVFoundation documentation](https://developer.apple.com/videos/play/wwdc2020/10010/) describes on-device export that changes codec, size, color space, and frame rate, with hardware HEVC encoding on iOS. Apple also documents [format conversion when an app shares captured video through the system share sheet](https://developer.apple.com/documentation/avfoundation/recording-movies-in-alternative-formats). The source file alone does not describe every transformation in an app upload.
 
-[Meta describes the actual Instagram app pipeline](https://engineering.fb.com/2025/11/17/ios/enhancing-hdr-on-instagram-for-ios-with-dolby-vision/): the creator's device makes an upload file, Meta's servers transcode it, and the viewer's device selects a playback version. For iPhone HDR video, that first stage encodes HEVC on the device. This confirms that a native app can process the source before the platform receives it. I did not measure which stage caused the differences in my tests.
+[Meta describes Instagram's actual app pipeline](https://engineering.fb.com/2025/11/17/ios/enhancing-hdr-on-instagram-for-ios-with-dolby-vision/): the creator's device makes an upload file, Meta's servers transcode it, and the viewer's device selects a playback version. For iPhone HDR video, the first stage encodes HEVC on the device. This establishes local processing in a major native app. My tests measured the final result of the whole path, not the contribution of each stage.
 
 Meta says [Instagram produces basic and advanced encodes](https://engineering.fb.com/2022/11/04/video-engineering/instagram-video-processing-encoding-reduction/) and uses adaptive bitrate playback. Its server change increased watch time covered by advanced encodes by 33%. [Reels' advanced versions](https://engineering.fb.com/2023/02/21/video-engineering/av1-codec-facebook-instagram-reels/) also depend partly on expected watch time. The upload file alone cannot establish what each viewer sees, and a browser extension cannot control those server and playback decisions.
 
 ## Related research
 
-- [Učakar, Selič, and Urbas (2020)](https://www.grid.uns.ac.rs/symposium/download/2020/73.pdf) varied codec and bitrate, then compared video before and after Instagram and YouTube uploads. They measured changes in size, resolution, and visible quality.
-- [Lu et al. (CVPR 2024)](https://openaccess.thecvf.com/content/CVPR2024/papers/Lu_KVQ_Kwai_Video_Quality_Assessment_for_Short-form_Videos_CVPR_2024_paper.pdf) studied short-form video quality using 600 uploads and 3,600 processed versions, including transcoding.
-- [Qi et al. (2023)](https://arxiv.org/abs/2312.12317) studied quality loss when user-generated video is compressed again for delivery.
+- **[Učakar, Selič, and Urbas (2020)](https://www.grid.uns.ac.rs/symposium/download/2020/73.pdf).** They encoded one 1080p/25 fps source at different codecs and bitrates, then compared the files after Instagram and YouTube uploads. Both platforms changed file properties, and the authors found visible quality changes. That backs my decision to judge the published video instead of treating a high-bitrate export as the result.
+- **[Lu et al. (CVPR 2024)](https://openaccess.thecvf.com/content/CVPR2024/html/Lu_KVQ_Kwai_Video_Quality_Assessment_for_Short-form_Videos_CVPR_2024_paper.html).** Their short-form dataset contains 600 uploaded videos and 3,600 processed versions across preprocessing, transcoding, and enhancement. It shows why quality has to be assessed after the full processing chain. That is how I compared my codecs, resolutions, frame rates, and upload methods.
+- **[Qi et al. (2023)](https://arxiv.org/abs/2312.12317).** They studied a common delivery problem: user-generated video is already compressed before a platform transcodes it again. They found that standard quality metrics poorly predicted the perceived difference after that second compression. That supports keeping real source detail and checking the viewed result instead of optimizing only the source file's bitrate.
 
-These papers support the processing problem. They do not test the same iPhone-versus-desktop paths I used.
+These studies establish the processing and measurement problem. My 40+ tests answer the route question they did not test: for my videos, the native iPhone app produced the most consistent result.
 
 ## Why I built the tool
 
-My 40+ tests showed that the native iPhone route worked best for me. The published pipeline explains why export settings alone could not settle it: the phone may prepare the upload, and the platform still decides which versions people watch. [YouTube recommends uploading at the recorded frame rate](https://support.google.com/youtube/answer/1722171?hl=en) and gives 2160p/60 a higher source bitrate range than 2160p/30. That supports keeping genuine 4K/60 footage intact through the handoff, without promising 4K/60 playback. I built 4K60 Native Ingest to repeat the route with the right file, account, and text. Its first implementation is Windows + iPhone + YouTube Shorts; the other platforms remain future work.
+The research explains why export settings alone did not solve this: the phone prepares an upload, the server makes new encodes, and the viewer receives one of them. My tests selected the route that worked: a genuine 4K/60 file uploaded in the native iPhone app. The Chrome extension did not deliver the same consistency, so I built 4K60 Native Ingest around the winning route. It checks the intended file, account, and text before the phone upload instead of making me repeat those steps by hand. The first implementation is Windows + iPhone + YouTube Shorts; the other platforms remain future work.
 
-## Recommendation
+## Recommended workflow
 
-When the footage supports it, I export a genuine **2160 × 3840, 59.94/60 fps progressive** file, select that exact file on the iPhone, upload through the native app, and check the finished post after processing. Raising bitrate, upscaling, or forcing a 60 fps label cannot replace real source detail or a good delivery path.
+1. **Start with real 4K/60 footage.** Keep the source's actual detail and motion. Upscaling or labeling a 30 fps clip as 60 fps does not create either one.
+2. **Export a clean vertical master.** Use **2160 × 3840, 59.94/60 fps progressive** when the source supports it. [YouTube recommends the recorded frame rate](https://support.google.com/youtube/answer/1722171?hl=en) and lists 53–68 Mbps as its 2160p high-frame-rate SDR upload range. That is a source-file starting point, not a playback bitrate.
+3. **Put the exact file on the iPhone.** Check its name, size, and preview before opening the platform app. 4K60 Native Ingest uses this handoff for YouTube Shorts.
+4. **Upload in the native app.** Check the account, file, and final text in the phone composer before submitting. This is the route that won my tests.
+5. **Judge the processed post.** Wait for higher-quality versions to finish, then inspect the published video on another device. [YouTube says 4K and 60 fps take longer to process](https://support.google.com/youtube/answer/71674?hl=en-GB); the first low-quality version is not the final result.
