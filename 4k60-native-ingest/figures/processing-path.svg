@@ -1,70 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="432" viewBox="0 0 1180 432" role="img" aria-labelledby="title desc">
-  <title id="title">The video path from source file to viewer</title>
-  <desc id="desc">A real 4K60 source is checked before native iPhone app preparation. The platform then creates playback encodes and the viewer's device selects a version. Meta documents the app, server, and playback stages for Instagram.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="228" viewBox="0 0 1180 228" role="img" aria-labelledby="title desc">
+  <title id="title">Video upload processing stages</title>
+  <desc id="desc">A 4K60 source file goes through native iPhone app preparation, platform encoding, and viewer playback selection. Meta documents the latter three stages for Instagram.</desc>
   <defs>
     <style>
       text { font-family: "Segoe UI", Arial, sans-serif; fill: #405360; }
-      .title { font-size: 25px; font-weight: 600; }
-      .subtitle { font-size: 15px; fill: #687d8a; }
-      .stage { font-size: 12px; font-weight: 700; letter-spacing: 1.7px; fill: #657b89; }
-      .main { font-size: 16px; font-weight: 700; fill: #fff; }
-      .detail { font-size: 14px; fill: #405360; }
-      .foot { font-size: 13px; fill: #657987; }
+      .stage { font-size: 14px; font-weight: 700; letter-spacing: 1.4px; fill: #657b89; }
+      .main { font-size: 18px; font-weight: 700; fill: #fff; }
       .frame { fill: #fff; stroke: #bccbd3; stroke-width: 1.5; stroke-dasharray: 4 4; }
       .slate { fill: #657b89; }
-      .lavender { fill: #e4e2fa; }
-      .mint { fill: #a9eae4; }
-      .soft { fill: #eef3f5; }
       .arrow { fill: none; stroke: #7a8d98; stroke-width: 2; marker-end: url(#arrowhead); }
     </style>
     <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L8,4 L0,8 Z" fill="#7a8d98"/>
     </marker>
   </defs>
-  <rect width="1180" height="432" fill="#fff"/>
-  <text x="48" y="49" class="title">Quality changes at more than one stage</text>
-  <text x="48" y="78" class="subtitle">4K60 Native Ingest checks the handoff; Meta documents the app, server, and viewer stages for Instagram</text>
+  <rect width="1180" height="228" fill="#fff"/>
+  <rect x="48" y="29" width="250" height="170" rx="14" class="frame"/>
+  <text x="66" y="61" class="stage">01  SOURCE</text>
+  <rect x="66" y="83" width="214" height="83" rx="9" class="slate"/>
+  <text x="173" y="132" text-anchor="middle" class="main">4K/60 FILE</text>
 
-  <rect x="48" y="117" width="250" height="236" rx="14" class="frame"/>
-  <text x="66" y="146" class="stage">01  SOURCE</text>
-  <rect x="66" y="174" width="214" height="70" rx="9" class="slate"/>
-  <text x="173" y="204" text-anchor="middle" class="main">REAL 4K / 60 FPS</text>
-  <text x="173" y="224" text-anchor="middle" class="main" style="font-size:14px">VERTICAL FILE</text>
-  <rect x="66" y="264" width="214" height="61" rx="9" class="soft"/>
-  <text x="173" y="289" text-anchor="middle" class="detail">Source detail and motion</text>
-  <text x="173" y="309" text-anchor="middle" class="detail">are already present</text>
+  <path d="M298 124 H323" class="arrow"/>
+  <rect x="326" y="29" width="250" height="170" rx="14" class="frame"/>
+  <text x="344" y="61" class="stage">02  IPHONE APP</text>
+  <rect x="344" y="83" width="214" height="83" rx="9" class="slate"/>
+  <text x="451" y="132" text-anchor="middle" class="main">LOCAL PREP</text>
 
-  <path d="M298 209 H323" class="arrow"/>
-  <rect x="326" y="117" width="250" height="236" rx="14" class="frame"/>
-  <text x="344" y="146" class="stage">02  PHONE HANDOFF</text>
-  <rect x="344" y="174" width="214" height="70" rx="9" class="slate"/>
-  <text x="451" y="204" text-anchor="middle" class="main">NATIVE APP</text>
-  <text x="451" y="224" text-anchor="middle" class="main" style="font-size:14px">PREPARES UPLOAD</text>
-  <rect x="344" y="264" width="214" height="61" rx="9" class="lavender"/>
-  <text x="451" y="289" text-anchor="middle" class="detail">Tool checks file, account,</text>
-  <text x="451" y="309" text-anchor="middle" class="detail">and reviewed text</text>
+  <path d="M576 124 H601" class="arrow"/>
+  <rect x="604" y="29" width="250" height="170" rx="14" class="frame"/>
+  <text x="622" y="61" class="stage">03  PLATFORM</text>
+  <rect x="622" y="83" width="214" height="83" rx="9" class="slate"/>
+  <text x="729" y="132" text-anchor="middle" class="main">NEW ENCODES</text>
 
-  <path d="M576 209 H601" class="arrow"/>
-  <rect x="604" y="117" width="250" height="236" rx="14" class="frame"/>
-  <text x="622" y="146" class="stage">03  PLATFORM</text>
-  <rect x="622" y="174" width="214" height="70" rx="9" class="slate"/>
-  <text x="729" y="204" text-anchor="middle" class="main">SERVER</text>
-  <text x="729" y="224" text-anchor="middle" class="main" style="font-size:14px">TRANSCODING</text>
-  <rect x="622" y="264" width="214" height="61" rx="9" class="lavender"/>
-  <text x="729" y="289" text-anchor="middle" class="detail">Multiple encodes at</text>
-  <text x="729" y="309" text-anchor="middle" class="detail">different bitrates</text>
-
-  <path d="M854 209 H879" class="arrow"/>
-  <rect x="882" y="117" width="250" height="236" rx="14" class="frame"/>
-  <text x="900" y="146" class="stage">04  VIEWER</text>
-  <rect x="900" y="174" width="214" height="70" rx="9" class="slate"/>
-  <text x="1007" y="204" text-anchor="middle" class="main">PLAYBACK</text>
-  <text x="1007" y="224" text-anchor="middle" class="main" style="font-size:14px">VERSION SELECTED</text>
-  <rect x="900" y="264" width="214" height="61" rx="9" class="mint"/>
-  <text x="1007" y="289" text-anchor="middle" class="detail">Device and connection</text>
-  <text x="1007" y="309" text-anchor="middle" class="detail">affect what is seen</text>
-
-  <path d="M48 375 H576 M604 375 H1132" fill="none" stroke="#b8c9d1" stroke-width="1.5"/>
-  <text x="312" y="398" text-anchor="middle" class="foot">BEFORE UPLOAD</text>
-  <text x="868" y="398" text-anchor="middle" class="foot">AFTER UPLOAD</text>
+  <path d="M854 124 H879" class="arrow"/>
+  <rect x="882" y="29" width="250" height="170" rx="14" class="frame"/>
+  <text x="900" y="61" class="stage">04  VIEWER</text>
+  <rect x="900" y="83" width="214" height="83" rx="9" fill="#a9eae4"/>
+  <text x="1007" y="132" text-anchor="middle" class="main" style="fill:#405360">PLAYBACK</text>
 </svg>
