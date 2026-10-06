@@ -1,4 +1,4 @@
-# Scaling Per-User Streaming Toolsets on Cloudflare — Edge Push, Hibernation, and Flat Cost-Per-User
+# Scaling Streamer Online on Cloudflare — Edge Push, Hibernation, and Flat Cost-Per-User
 
 **Date:** 2026-05-11 · **Updated:** 2026-09-09
 **Author:** deutschmark
@@ -7,7 +7,7 @@
 
 ## Abstract
 
-A per-user streaming toolset on Cloudflare's edge — Workers, KV, Durable Objects, Pages — composed so cost-per-user stays roughly flat as user count grows. Each streamer runs multiple OBS browser-source overlays; the hot path is push, not pull. The now-playing widget polls Spotify directly using a worker-minted short-lived token, eliminating server-mediated polling. The event-driven overlays subscribe to a per-user Durable Object via hibernatable WebSocket; dashboard saves and Twitch EventSub webhooks dispatch through service bindings. KV is cold persistence — read on session start and on save, never on a poll. The shape changes cost from `O(N × K × polls/hour)` to `O(N × events/hour)`, where `events ≪ polls` at any non-trivial usage. Four months of production growth — eight overlays to a 78-widget catalog, 29 active streamers — has not moved the monthly bill off a single Workers Paid umbrella.
+Streamer Online, a per-user set of streaming tools on Cloudflare's edge — Workers, KV, Durable Objects, Pages — composed so cost-per-user stays roughly flat as user count grows. Each streamer runs multiple OBS browser-source overlays; the hot path is push, not pull. The now-playing widget polls Spotify directly using a worker-minted short-lived token, eliminating server-mediated polling. The event-driven overlays subscribe to a per-user Durable Object via hibernatable WebSocket; dashboard saves and Twitch EventSub webhooks dispatch through service bindings. KV is cold persistence — read on session start and on save, never on a poll. The shape changes cost from `O(N × K × polls/hour)` to `O(N × events/hour)`, where `events ≪ polls` at any non-trivial usage. Four months of production growth — eight overlays to a 78-widget catalog, 29 active streamers — has not moved the monthly bill off a single Workers Paid umbrella.
 
 ---
 
@@ -20,7 +20,7 @@ flowchart LR
   subgraph OBS["Streamer's OBS browser sources"]
     NP["now-playing widget"]
     EV["event-driven widgets<br/>(counters, alerts, lists, chat)"]
-    DASH["dashboard (toolset app)"]
+    DASH["dashboard (Streamer Online app)"]
   end
 
   subgraph Edge["Cloudflare edge"]

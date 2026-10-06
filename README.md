@@ -5,7 +5,7 @@ Technical write-ups on some of the harder problems I came across.
 | Paper | Topic | Stack |
 |---|---|---|
 | [4K60 Native Ingest](4k60-native-ingest/) | Findings from 40+ videos testing codecs, bitrates, resolutions, a Chrome extension, and native iPhone uploads | iOS media pipeline, short-form video, Video Drop |
-| [Scaling streaming toolsets on Cloudflare](scaling-streaming-toolsets/) | Designing a per-user multi-overlay platform so cost-per-user stays roughly flat as you grow — edge push, Hibernatable WebSockets, EventSub | Cloudflare Workers, KV, Durable Objects, Hibernatable WebSockets, EventSub |
+| [Scaling Streamer Online on Cloudflare](scaling-streamer-online/) | Designing a per-user multi-overlay platform so cost-per-user stays roughly flat as you grow — edge push, Hibernatable WebSockets, EventSub | Cloudflare Workers, KV, Durable Objects, Hibernatable WebSockets, EventSub |
 | [Chat bot memory](chat-bot-memory/) | Persistent memory for a Twitch chat bot without storing raw chat logs | C#, Streamer.bot, Gemini Flash |
 | [Building Pathos](how-i-built-pathos/) | A worker-side job-search system connecting roles, evidence-backed resumes, application tracking, and a review-first browser extension | React 19, Vite, Supabase, Cloudflare Workers, Chrome MV3 |
 
