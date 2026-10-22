@@ -1,29 +1,54 @@
-# Building Pathos
+# Keeping AI resume edits tied to real experience
 
-Pathos is a job-search system built for the candidate. It brings role discovery, resume work, applications, and follow-up into one record so a person can make decisions without reconstructing their search across tabs and inboxes. The product name is **Pathos**; P.A.T.H.O.S. is the expanded project name.
+*Pathos · Build note · 22 October 2026*
 
-## The system, not a score
+[Pathos](https://yourpathos.app) connects a person's job search: roles, resumes, applications, and the next thing they need to do. The resume work has a basic constraint. Improving the wording must not invent the person.
 
-The public job board starts with source-linked postings. Importers normalize different employer career systems into one job record, preserve the source link, and avoid treating an interrupted check as proof that a role closed. Search and filters work without a resume. When a candidate provides enough context, “For you” can rank roles and show the evidence behind a match. Missing or weak evidence remains visible as uncertainty.
+A fluent sentence can still be false. A neatly structured import can still contain a company or skill that was never in the document. Asking a model to stay factual is only one part of the implementation.
 
-The signed-in product has four main destinations: Dashboard, Jobs, Tracker, and Profile. Pathos can help from those pages; resume optimization and coaching are focused actions rather than the entire navigation model. The tracker carries a role from saved through application, interview, and outcome, with its documents, status changes, and next steps attached.
+## Importing a resume is already a truth problem
 
-## The resume is the source
+The first boundary comes before rewriting. When a model turns a document into structured fields, a valid response shape does not prove that the field values came from the source.
 
-A candidate can import or build a base resume in Resume Studio. For a particular role, the optimizer combines repeatable checks with model-assisted rewriting. The model can propose stronger wording or emphasis, but it does not get to invent a title, skill, credential, employer, or result. Source-aware validation checks the proposed document and restores or rejects unsupported claims. The final artifact is checked after cleanup so its reported analysis describes the version the candidate actually sees.
+Pathos checks extracted resume strings against the document text after normalizing punctuation and whitespace. Unsupported imported values are omitted. If the remaining result has no useful resume structure, the import is rejected.
 
-The score is an aid to inspecting a resume against a posting. It is not a claim to reproduce an employer's ATS or predict a hiring decision.
+This is a stricter job than deciding whether a rewrite sounds reasonable. At this stage, the model is supposed to extract the record, not improve it.
 
-## The browser and inbox boundaries
+## A job posting is not candidate evidence
 
-The separately packaged Chrome extension detects job and application pages, prepares supported fields, attaches a reviewed resume for the role, and drafts supported screening answers from candidate evidence. It holds uncertain and sensitive fields for the person to review. Its application record is tied to observed submission intent, rather than treating a prepared form as a submitted job.
+The target role tells the optimizer what the employer asks for. It does not establish that the candidate has done those things.
 
-For email, the candidate chooses which messages to forward to a private Pathos address. The inbound handler authenticates the request, resolves the alias to its owner, looks for the right application, and classifies job-status evidence with rules before any bounded model fallback. A guarded result may update the tracker; uncertainty goes to review. The candidate can correct an applied result. The raw body is processed transiently rather than kept as a second mailbox.
+For example, a posting that asks for team leadership cannot justify adding “managed a team of five” to a resume that never says that. That is an illustrative failure case, not an example of a real user's resume.
 
-## Architecture and trade-off
+The editing path can propose clearer wording and a different emphasis. Checks around that proposal look for unsupported numbers, named tools, acronyms, and result claims. The person's source record remains the reference when a proposed edit cannot be supported.
 
-The web app uses React 19, React Router 7, Zustand 5, and Vite 8. Supabase provides authentication, Postgres with row-level security, storage, and Deno Edge Functions. Cloudflare Pages serves the web app; Workers run scheduled job ingest and related processing. Gemini is routed through server-side functions and subject to deterministic checks. Stripe handles billing. The extension is a separate Chrome Manifest V3 application.
+```mermaid
+flowchart LR
+  R["Person's source record"] --> P["Proposed edit"]
+  J["Target job: requirements only"] --> P
+  P --> C["Check claims against the source"]
+  C --> S["Supported wording for review"]
+  C --> H["Unsupported detail held back"]
+```
 
-The hard problem is keeping one claim consistent as it crosses those boundaries: a job must still point to its source, a resume change must still point to candidate evidence, an email update must still point to the right application, and a prepared application must not be mistaken for a submitted one. That is the organizing constraint behind the product.
+The checks are useful, but they are not a proof that a model understands someone's career. They can miss meaning or reject wording that a person could explain. The review step still matters.
 
-Pathos is available at [yourpathos.app](https://yourpathos.app); the [source repository](https://github.com/thedevmark/pathosapp) documents its current architecture and product boundaries.
+## The result page makes claims too
+
+It is possible to keep the resume text factual and then mislead the person in the explanation.
+
+A “skill found in your record” label needs evidence in that record. A missing requirement should remain a gap. Related business language must not accidentally become evidence of a programming language or a new qualification.
+
+Pathos has regression cases for these distinctions. They include an absent skill staying absent and “go-to-market” wording not establishing the Go programming language.
+
+The result also has to describe the final document. If cleanup restores source wording after a proposed edit fails a check, the explanation cannot keep celebrating the rejected version.
+
+## Keep assistance separate from the person's decision
+
+The same boundary carries into the [Chrome extension](https://chromewebstore.google.com/detail/ecniiinpnbhcjicagdhipdogcajohdip). It can prepare supported application fields, attach a reviewed resume, and draft answers from the candidate's information. Uncertain or sensitive fields stay for review. The candidate submits.
+
+A fit score is another limited aid. It can help inspect the relationship between a posting and a resume. It cannot establish how an employer's private screening system will behave or predict a hiring decision.
+
+This constraint adds work: source checks, rejected proposals, corrections, and explanations that must stay in agreement. I keep it because the person has to stand behind the application after the software is finished.
+
+[Pathos](https://yourpathos.app) · [Pathos Chrome extension](https://chromewebstore.google.com/detail/ecniiinpnbhcjicagdhipdogcajohdip) · [All build notes](../)

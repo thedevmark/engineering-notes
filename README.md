@@ -1,25 +1,24 @@
-# engineering-notes
+# Build notes
 
-Technical write-ups on some of the harder problems I came across.
+I build games and practical tools for streaming, video, and job search. These notes explain the problems behind a few of them, the choices I made, and what still needs work.
 
-| Paper | Topic | Stack |
-|---|---|---|
-| [4K60 Native Ingest](4k60-native-ingest/) | Findings from 40+ videos testing codecs, bitrates, resolutions, a Chrome extension, and native iPhone uploads | iOS media pipeline, short-form video, Video Drop |
-| [Scaling Streamer Online on Cloudflare](scaling-streamer-online/) | Designing a per-user multi-overlay platform so cost-per-user stays roughly flat as you grow — edge push, Hibernatable WebSockets, EventSub | Cloudflare Workers, KV, Durable Objects, Hibernatable WebSockets, EventSub |
-| [Chat bot memory](chat-bot-memory/) | Persistent memory for a Twitch chat bot without storing raw chat logs | C#, Streamer.bot, Gemini Flash |
-| [Building Pathos](how-i-built-pathos/) | A worker-side job-search system connecting roles, evidence-backed resumes, application tracking, and a review-first browser extension | React 19, Vite, Supabase, Cloudflare Workers, Chrome MV3 |
+## Start here
 
----
+### [Making a chat game work over stream delay](chat-vs-meteors/)
 
-## deutschmark's other apps
+In Chat vs. Meteors, the game, the stream, and the viewer's answer run on different clocks. How I handle late answers without making everyone wait for the slowest connection.
 
-<table>
-<tr><td align="center" width="56"><img src=".github/apps/pathos.svg" width="44" alt=""></td><td><a href="https://yourpathos.app"><b>Pathos</b></a><br>Worker-side job search with source-linked roles, evidence-checked resumes, and application tracking.</td></tr>
-<tr><td align="center" width="56"><img src=".github/apps/markskill.svg" width="44" alt=""></td><td><a href="https://github.com/thedevmark/markskill"><b>Markskill</b></a><br>A product-engineering skill for AI agents: trace behavior to its owner, fix root causes, shape interfaces around real tasks, and verify claims with evidence.</td></tr>
-<tr><td align="center" width="56"><img src=".github/apps/alert-alert.svg" width="39" alt=""></td><td><a href="https://github.com/thedevmark/alert-alert"><b>Alert! Alert!</b></a><br>Turn a video URL or local file into a cropped, trimmed stream alert.</td></tr>
-<tr><td align="center" width="56"><img src=".github/apps/auto-iphone-uploader.svg" width="39" alt=""></td><td><a href="https://github.com/thedevmark/auto-iphone-uploader"><b>Auto iPhone Uploader</b></a><br>Write a video's title and captions once on your PC, then post it from the real apps on your iPhone. Early preview.</td></tr>
-<tr><td align="center" width="56"><img src=".github/apps/streamer-online.png" width="44" alt=""></td><td><a href="https://streamer.deutschmark.online"><b>Streamer Online</b></a><br>Build OBS scenes and browser-source overlays with connected streamer tools.</td></tr>
-<tr><td align="center" width="56"><img src=".github/apps/forgetmenot.png" width="32" alt=""></td><td><a href="https://github.com/thedevmark/forgetmenot"><b>ForgetMeNot</b></a><br>A local-first Twitch bot that remembers regulars, callbacks, and stream lore.</td></tr>
-</table>
+### [4K60 Native Ingest: why my uploader uses an iPhone](4k60-native-ingest/)
 
-<sub>All projects → <a href="https://github.com/thedevmark">github.com/thedevmark</a></sub>
+My browser uploads kept losing the video quality I had exported. What I found when I compared upload routes, and why I built around the native phone apps.
+
+### [Keeping AI resume edits tied to real experience](how-i-built-pathos/)
+
+An application tool can make a resume sound stronger while quietly making it less true. How Pathos checks imported details and proposed edits against the person's own record.
+
+## More implementation notes
+
+- [Keeping stream overlays in sync](scaling-streamer-online/) — Sharing updates across Streamer Online's browser sources, including the music display.
+- [Giving a Twitch bot useful memory](chat-bot-memory/) — What ForgetMeNot keeps, how it chooses context, and where its memory can go wrong.
+
+[My projects](https://github.com/thedevmark) · [Website](https://deutschmark.online) · [Twitch](https://twitch.tv/thedeutschmark)
